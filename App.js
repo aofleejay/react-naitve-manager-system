@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import firebase from 'firebase'
+import thunk from 'redux-thunk'
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -12,7 +12,7 @@ import {
   MESSAGING_SENDER_ID,
 } from 'react-native-dotenv'
 import reducers from './src/reducers'
-import LoginForm from './src/components/LoginForm'
+import RouterC from './src/Router'
 
 class App extends Component {
   componentWillMount() {
@@ -29,9 +29,11 @@ class App extends Component {
   }
 
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(thunk))
+
     return (
-      <Provider store={createStore(reducers)}>
-        <LoginForm />
+      <Provider store={store}>
+        <RouterC />
       </Provider>
     )
   }
